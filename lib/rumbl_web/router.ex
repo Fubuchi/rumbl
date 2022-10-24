@@ -2,22 +2,24 @@ defmodule RumblWeb.Router do
   use RumblWeb, :router
 
   pipeline :browser do
-    plug(:accepts, ["html"])
-    plug(:fetch_session)
-    plug(:fetch_live_flash)
-    plug(:put_root_layout, {RumblWeb.LayoutView, :root})
-    plug(:protect_from_forgery)
-    plug(:put_secure_browser_headers)
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :fetch_live_flash
+    plug :put_root_layout, {RumblWeb.LayoutView, :root}
+    plug :protect_from_forgery
+    plug :put_secure_browser_headers
   end
 
   pipeline :api do
-    plug(:accepts, ["json"])
+    plug :accepts, ["json"]
   end
 
   scope "/", RumblWeb do
-    pipe_through(:browser)
+    pipe_through :browser
 
-    get("/", PageController, :index)
+    get "/users", UserController, :index
+    get "/users/:id", UserController, :show
+    get "/", PageController, :index
   end
 
   # Other scopes may use custom stacks.
@@ -36,9 +38,9 @@ defmodule RumblWeb.Router do
     import Phoenix.LiveDashboard.Router
 
     scope "/" do
-      pipe_through(:browser)
+      pipe_through :browser
 
-      live_dashboard("/dashboard", metrics: RumblWeb.Telemetry)
+      live_dashboard "/dashboard", metrics: RumblWeb.Telemetry
     end
   end
 end
