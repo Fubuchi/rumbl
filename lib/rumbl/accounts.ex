@@ -1,23 +1,20 @@
 defmodule Rumbl.Accounts do
+  alias Rumbl.Repo
   alias Rumbl.Accounts.User
 
-  def list_users() do
-    [
-      %User{id: "1", name: "José", username: "josevalim"},
-      %User{id: "2", name: "Bruce", username: "redrapids"},
-      %User{id: "3", name: "Chris", username: "chrismccord"}
-    ]
-  end
+  def list_users(), do: Repo.all(User)
 
-  def get_user(id) do
-    list_users()
-    |> Enum.find(&(&1.id == id))
-  end
+  def get_user(id), do: Repo.get(User, id)
 
-  def get_user_by(params) do
-    list_users()
-    |> Enum.find(fn user ->
-      Enum.all?(params, fn {k, v} -> Map.get(user, k) == v end)
-    end)
+  def get_user!(id), do: Repo.get!(User, id)
+
+  def get_user_by(params), do: Repo.get(User, params)
+
+  def change_user(user = %User{}), do: User.changeset(user, %{})
+
+  def create_user(attrs \\ %{}) do
+    %User{}
+    |> User.changeset(attrs)
+    |> Repo.insert()
   end
 end
