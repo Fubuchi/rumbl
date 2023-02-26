@@ -16,5 +16,10 @@
     <%= error_tag(form, :username) %>
   </div>
 
+  <div>
+    <%= password_input(form, :password, placeholder: "Password") %>
+    <%= error_tag(form, :password) %>
+  </div>
+
   <%= submit("Creat User") %>
 <% end %>
